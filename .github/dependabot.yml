@@ -1,32 +1,41 @@
 version: 2
 
 updates:
-  # ===========================================
-  # Docker
-  # ===========================================
   - package-ecosystem: docker
-    directory: /
+    directories:
+      - /
+      - /config/terraform
+      - /config/vault
     schedule:
       interval: daily
       time: '07:00'
       timezone: Europe/Paris
     commit-message:
       prefix: 'chore(deps):'
-    ignore:
-      # Image Keycloak en :latest non épinglée, sera traitée dans le lot 3
-      - dependency-name: quay.io/keycloak/keycloak
     groups:
-      # Docker images - patch and minor
       docker-minor-patch:
         applies-to: version-updates
         update-types:
           - patch
           - minor
-      # Majors : pas de groupe, chaque image a sa propre PR
 
-  # ===========================================
-  # Terraform
-  # ===========================================
+  - package-ecosystem: docker-compose
+    directories:
+      - /
+      - /deploy
+    schedule:
+      interval: daily
+      time: '07:00'
+      timezone: Europe/Paris
+    commit-message:
+      prefix: 'chore(deps):'
+    groups:
+      docker-compose-minor-patch:
+        applies-to: version-updates
+        update-types:
+          - patch
+          - minor
+
   - package-ecosystem: terraform
     directory: /config/terraform
     schedule:
@@ -36,17 +45,12 @@ updates:
     commit-message:
       prefix: 'chore(deps):'
     groups:
-      # Terraform providers/modules - patch and minor
       terraform-minor-patch:
         applies-to: version-updates
         update-types:
           - patch
           - minor
-      # Majors : pas de groupe, chaque provider/module a sa propre PR
 
-  # ===========================================
-  # GitHub Actions
-  # ===========================================
   - package-ecosystem: github-actions
     directory: /
     schedule:
@@ -56,10 +60,8 @@ updates:
     commit-message:
       prefix: 'ci(deps):'
     groups:
-      # GitHub Actions - patch and minor
       actions-minor-patch:
         applies-to: version-updates
         update-types:
           - patch
           - minor
-      # Majors : pas de groupe, chaque action a sa propre PR
