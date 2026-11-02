@@ -1,9 +1,9 @@
 version: '3.8'
 
 
-services: 
-    postgres: 
-        image: postgres
+services:
+    postgres:
+        image: postgres:15-alpine
         env_file: .env
         restart: 'always'
         volumes:
