@@ -12,12 +12,18 @@ updates:
       timezone: Europe/Paris
     commit-message:
       prefix: 'chore(deps):'
+    cooldown:
+      default-days: 3
     groups:
       docker-minor-patch:
         applies-to: version-updates
         update-types:
           - patch
           - minor
+      docker-major:
+        applies-to: version-updates
+        update-types:
+          - major
 
   - package-ecosystem: docker-compose
     directories:
@@ -29,12 +35,21 @@ updates:
       timezone: Europe/Paris
     commit-message:
       prefix: 'chore(deps):'
+    # Image qui double l'addon Scalingo : sa version suit celle de la prod, pas la dernière publiée
+    ignore:
+      - dependency-name: 'postgres'
+    cooldown:
+      default-days: 3
     groups:
       docker-compose-minor-patch:
         applies-to: version-updates
         update-types:
           - patch
           - minor
+      docker-compose-major:
+        applies-to: version-updates
+        update-types:
+          - major
 
   - package-ecosystem: terraform
     directory: /config/terraform
@@ -44,12 +59,18 @@ updates:
       timezone: Europe/Paris
     commit-message:
       prefix: 'chore(deps):'
+    cooldown:
+      default-days: 3
     groups:
       terraform-minor-patch:
         applies-to: version-updates
         update-types:
           - patch
           - minor
+      terraform-major:
+        applies-to: version-updates
+        update-types:
+          - major
 
   - package-ecosystem: github-actions
     directory: /
@@ -59,9 +80,15 @@ updates:
       timezone: Europe/Paris
     commit-message:
       prefix: 'ci(deps):'
+    cooldown:
+      default-days: 3
     groups:
       actions-minor-patch:
         applies-to: version-updates
         update-types:
           - patch
           - minor
+      actions-major:
+        applies-to: version-updates
+        update-types:
+          - major
