@@ -4,6 +4,7 @@ SHELL=/bin/sh
 
 TFSTATE_PATH?=terraform.tfstate
 
+plan: check-config terraform-client terraform-plan
 apply: check-config terraform-client terraform-apply
 apply-local: check-config-local terraform-client terraform-apply-local
 
@@ -40,6 +41,10 @@ terraform-init:
 	fi
 	pwd
 	terraform init -backend-config="conn_str=${TFSTATE_DATABASE_URL}" -backend-config="schema_name=${TFSTATE_DATABASE_SCHEMA}" -input=false
+
+terraform-plan: terraform-init
+	rm -f users.tf
+	terraform plan -input=false
 
 terraform-apply: terraform-init
 	rm users.tf 

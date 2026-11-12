@@ -40,21 +40,21 @@ resource "keycloak_realm" "pass-emploi" {
 
   security_defenses {
     brute_force_detection {
-      permanent_lockout                = false
-      max_login_failures               = 5
-      wait_increment_seconds           = 60 * 10
-      quick_login_check_milli_seconds  = 1000
-      minimum_quick_login_wait_seconds = 60
-      max_failure_wait_seconds         = 60 * 60 * 24
-      failure_reset_time_seconds       = 60 * 60 * 24 * 7
+      permanent_lockout                = local.brute_force_detection.permanent_lockout
+      max_login_failures               = local.brute_force_detection.max_login_failures
+      wait_increment_seconds           = local.brute_force_detection.wait_increment_seconds
+      quick_login_check_milli_seconds  = local.brute_force_detection.quick_login_check_milli_seconds
+      minimum_quick_login_wait_seconds = local.brute_force_detection.minimum_quick_login_wait_seconds
+      max_failure_wait_seconds         = local.brute_force_detection.max_failure_wait_seconds
+      failure_reset_time_seconds       = local.brute_force_detection.failure_reset_time_seconds
     }
   }
 }
 
+# events_enabled : une écriture en base par événement ; sous flood, Keycloak a saturé Postgres (post-mortem 2026-10).
 resource "keycloak_realm_events" "realm_events" {
   realm_id                     = keycloak_realm.pass-emploi.id
-  events_enabled               = true
-  enabled_event_types          = []
+  events_enabled               = false
   admin_events_enabled         = true
   admin_events_details_enabled = true
   events_expiration            = 60 * 60 * 24 * 90 //90 jours

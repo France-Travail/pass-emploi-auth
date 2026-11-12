@@ -27,9 +27,17 @@ clean: ##Stop and remove containers, volumes and other docker stuff
 logs:
 	docker-compose logs -f keycloak
 
+plan-staging:
+	docker-compose -f deploy/docker-compose.yml build --no-cache provision-scalingo-staging
+	docker-compose -f deploy/docker-compose.yml run --rm provision-scalingo-staging make plan
+
 provision-staging:
 	docker-compose -f deploy/docker-compose.yml build --no-cache provision-scalingo-staging
 	docker-compose -f deploy/docker-compose.yml run --rm provision-scalingo-staging 
+
+plan-prod:
+	docker-compose -f deploy/docker-compose.yml build --no-cache provision-scalingo-prod
+	docker-compose -f deploy/docker-compose.yml run --rm provision-scalingo-prod make plan
 
 provision-prod:
 	docker-compose -f deploy/docker-compose.yml build --no-cache provision-scalingo-prod
