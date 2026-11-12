@@ -8,6 +8,5 @@ terraform {
 }
 
 provider "keycloak" {
-  client_timeout           = 10
-  tls_insecure_skip_verify = true
+  client_timeout = 10
 }
